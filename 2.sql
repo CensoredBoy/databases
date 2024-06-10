@@ -3,4 +3,15 @@
 -- Примечание   к   ранжированию   –   ранг   может   начинаться   с
 -- произвольного числа (например,  2 или 5),  главное – ранг не должен
 -- уменьшаться.
-select "ProductID","Weight", ROW_NUMBER() OVER (ORDER BY "Weight") as Rank from "Production"."Product";
+WITH RankedProducts AS (
+  SELECT 
+    "ProductID", 
+    "Weight", 
+    ROW_NUMBER() OVER (ORDER BY "Weight") AS "rn"
+  FROM "Production"."Product"
+)
+SELECT
+  "ProductID",
+  "Weight",
+  "rn" AS "Rank"
+FROM RankedProducts;
